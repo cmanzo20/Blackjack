@@ -5,7 +5,7 @@ body{
     text-align: center;
 }
 
-.Header{
+header{
     background-color: red;
     overflow: hidden;
     border-radius: 3rem;
@@ -60,9 +60,11 @@ span{
 
 button{
     position: relative;
-    bottom: 10rem;
+    bottom: 20rem;
     font-size: xx-large;
     margin-inline: 2rem;
     width: 8rem;
+    background-color: red;
+    outline-style:solid;
 }
 
