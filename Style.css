@@ -41,21 +41,21 @@ span{
     margin-right: auto;
     border-radius: 5rem;
     border-style: solid;
-    height: 35rem;
+    height: 40rem;
 }
 
-.Cards{
+.Cards img{
     height: 10rem;
 }
 
 #DealerCards{
     position: relative;
-    bottom: 30rem;
+    bottom: 35rem;
 }
 
 #PlayerCards{
     position: relative;
-    bottom: 15rem;
+    bottom: 25rem;
 }
 
 button{
