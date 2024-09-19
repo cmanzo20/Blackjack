@@ -44,6 +44,12 @@ span{
     height: 35rem;
 }
 
+.DealerCards{
+    height: 10rem;
+    position: relative;
+    bottom: 30rem;
+}
+
 .Cards{
     height: 10rem;
     position: relative;
