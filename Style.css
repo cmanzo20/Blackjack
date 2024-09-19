@@ -44,14 +44,16 @@ span{
     height: 35rem;
 }
 
-.DealerCards{
+.Cards{
     height: 10rem;
+}
+
+#DealerCards{
     position: relative;
     bottom: 30rem;
 }
 
-.Cards{
-    height: 10rem;
+#PlayerCards{
     position: relative;
     bottom: 15rem;
 }
