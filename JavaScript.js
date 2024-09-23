@@ -8,6 +8,7 @@ let deck = buildDeck();  //deck of cards
 //when window loads...
 window.onload = function(){
     shuffle(deck);
+    updateMaxBet();
 }
 
 function buildDeck() {  //returns deck of cards
@@ -42,4 +43,9 @@ function getCardValue(card){
             return 10;
     }
     return(parseInt(value_PNG[0]));
+}
+
+function updateMaxBet(){
+    var maxBet = document.getElementById('betAmount');
+    maxBet.setAttribute("max", totalCash);  //max bet amount is what balance remains
 }
