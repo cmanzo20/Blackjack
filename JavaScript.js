@@ -7,7 +7,7 @@ let deck = buildDeck();  //deck of cards
 
 //when window loads...
 window.onload = function(){
-    
+    shuffle(deck);
 }
 
 function buildDeck() {  //returns deck of cards
@@ -22,4 +22,24 @@ function buildDeck() {  //returns deck of cards
     }
 
     return deck;    //returns fully built deck of cards
+}
+
+function shuffle(deck){
+    for(let i = 0; i<deck.length; i++){
+        let randomIndex = Math.floor(Math.random()*deck.length);
+        let temp = deck[i];
+        deck[i] = deck[randomIndex];
+        deck[randomIndex] = temp;
+    }
+}
+
+function getCardValue(card){
+    let value_PNG = card.split("-");
+    if(isNaN(value_PNG[0])){  //face card
+        if(value_PNG[0]== 'A')
+            return 11;
+        else    //non Ace face card
+            return 10;
+    }
+    return(parseInt(value_PNG[0]));
 }
