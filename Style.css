@@ -59,17 +59,35 @@ h2 {
 }
 
 button{
-    position: relative;
-    bottom: 20rem;
     font-size: xx-large;
     margin-inline: 2rem;
-    width: 8rem;
     background-color: red;
     outline-style:solid;
 }
 
-#betPrompt{
+button:hover{
+    filter: brightness(1.5);
+    transform: scale(1.05);
+}
+
+#Hit, #Stand {
     position: relative;
-    bottom: 40rem;
+    bottom: 20rem;
+    width: 8rem;
+}
+
+#betPrompt{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    bottom: 46rem;
+    color: black;
     font-size: larger;
+    font-style: oblique;
+    font-weight: bold;
+}
+
+#betPrompt button{
+    margin-top: 1rem;
 }

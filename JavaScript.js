@@ -49,3 +49,7 @@ function updateMaxBet(){
     var maxBet = document.getElementById('betAmount');
     maxBet.setAttribute("max", totalCash);  //max bet amount is what balance remains
 }
+
+function Gamble(event){
+    event.preventDefault();
+}

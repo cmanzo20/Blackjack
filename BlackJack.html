@@ -20,13 +20,13 @@
         <div id="PlayerCards" class="Cards">
             <img src="Cards/BACK.png">
         </div>
-        <button>Hit</button>
-        <button>Stand</button>
-        <div id="betPrompt">
+        <button id="Hit">Hit</button>
+        <button id="Stand">Stand</button>
+        <form id="betPrompt" onsubmit="Gamble(event)">
             <label for="betAmount">Enter bet amount: </label>
-            <span>$<input type="number" id="betAmount" name="betAmount" max="*totalCash"></span>
-        </div>
-
+            <span>$<input type="number" id="betAmount" name="betAmount" max="totalCash"></span>
+            <button>Gamble</button>
+        </form>
     </main>
 </body>
 
