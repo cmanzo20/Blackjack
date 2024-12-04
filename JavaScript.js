@@ -103,16 +103,20 @@ function dealCards(){
     dealPlayerCard();
 }
 
+function flipHiddenCard(newCard) {
+    const hidden = document.querySelector("#DealerCards img:first-of-type");
+    hidden.src = "/Cards/"+newCard+".png";
+}
+
 function Gamble(event){
     event.preventDefault(); //prevent page reload
     resetGame();
-
-    console.log(isMyTurn);
     
     let hit = document.getElementById("Hit");
     let stand = document.getElementById("Stand");
     
     dealCards();
+    flipHiddenCard(hiddenCard);
     
     hit.addEventListener('click', function() {
         if(!standClicked){
