@@ -62,10 +62,18 @@ function displayCard(card, displayLocation){    //display card on webpage
     displayLocation.append(img);
 }
 
+function removeCards(){ //removes cards from screen
+    let DealerCards = document.getElementById("DealerCards");
+    let PlayerCards = document.getElementById("PlayerCards");
+    DealerCards.textContent = "";
+    PlayerCards.textContent = "";
+}
+
 
 function Gamble(event){
     event.preventDefault(); //prevent page reload
     subtractBet();  
+    removeCards();
     dealerSum += getCardValue(deck[deck.length-1]); //deal 1st card to dealer
     displayCard(deck[deck.length-1], DealerCards);
     deck.pop();
