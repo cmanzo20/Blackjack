@@ -85,28 +85,27 @@ function displayCard(card, displayLocation){    //display card on webpage
 }
 
 function dealPlayerCard(){
-    playerSum += getCardValue(deck[deck.length - 1]);
-    if(getCardValue(deck[deck.length - 1]) == 11)   //if ace
+    let card = deck.pop();
+    playerSum += getCardValue(card);
+    if(getCardValue(card) == 11)   //if ace
         playerAceCount+=1;
-    displayCard(deck[deck.length - 1], PlayerCards);
-    deck.pop();
+    displayCard(card, PlayerCards);
 }
 
 function dealDealerCard(){
-    dealerSum += getCardValue(deck[deck.length-1]); //deal 2nd card to dealer
-    if(getCardValue(deck[deck.length - 1]) == 11)   //if ace
+    let card = deck.pop();
+    dealerSum += getCardValue(card); //deal 2nd card to dealer
+    if(getCardValue(card) == 11)   //if ace
         dealerAceCount+=1;
-    displayCard(deck[deck.length-1], DealerCards);
-    deck.pop();
+    displayCard(card, DealerCards);
 }
 
 function dealCards(){
-    hiddenCard = deck[deck.length-1];   //save hidden card
-    dealerSum += getCardValue(deck[deck.length-1]); //deal 1st card to dealer
-    if(getCardValue(deck[deck.length - 1]) == 11)   //if ace
+    hiddenCard = deck.pop();   //save hidden card
+    dealerSum += getCardValue(hiddenCard); //deal 1st card to dealer
+    if(getCardValue(hiddenCard) == 11)   //if ace
         dealerAceCount+=1;
     displayCard("BACK", DealerCards);   //Does not display first card
-    deck.pop();
     dealPlayerCard();
     dealDealerCard();
     dealPlayerCard();
