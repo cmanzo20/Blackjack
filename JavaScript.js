@@ -48,6 +48,8 @@ function getCardValue(card){    //returns cards numerical value
 }
 
 function resetGame(){
+    deck = buildDeck(); //rebuilds deck every time FOR NOW
+    shuffle(deck);  
     playerSum = 0;
     dealerSum = 0;
     playerAceCount = 0;
@@ -115,21 +117,7 @@ function flipHiddenCard(newCard) {
     hidden.src = "/Cards/"+newCard+".png";
 }
 
-function handleStand(){
-    if(isMyTurn){
-        alert("You decided to stand with a total of: " + playerSum);
-        flipHiddenCard(hiddenCard);
-        isMyTurn = false;
-
-        while(dealerSum < 17){   //dealer draws until 17+
-            dealDealerCard();
-            //maybe add sleep function to display cards slowly/1 at a time
-        }
-    }
-}
-
 function handleHit(){
-    console.log("Hit has been pressed");
     if(isMyTurn){
         if (playerSum < 21) {
             dealPlayerCard();
@@ -141,13 +129,28 @@ function handleHit(){
                 if(playerAceCount > 0){
                     playerAceCount-=1;
                     playerSum -=10;
-                    alert("FYI- your ace is now a 1");
                 }
                 else{
                     alert("BUST");
                     isMyTurn = false;
                 }
             }
+        }
+    }
+}
+
+function handleStand(){
+    if(isMyTurn){
+        isMyTurn = false;
+        flipHiddenCard(hiddenCard);
+        while(dealerSum < 17){   //dealer draws until 17+
+            dealDealerCard();
+            if(dealerSum>21)
+                if(dealerAceCount>0){
+                    dealerSum-=10;
+                    dealerAceCount-=1;
+                }
+            //maybe add sleep function to display cards slowly/1 at a time
         }
     }
 }
