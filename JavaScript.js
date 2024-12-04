@@ -1,6 +1,8 @@
 let totalCash = 1000;   //starting cash value $1000
 let playerSum = 0;  //player card total
 let dealerSum = 0;  //dealer card total
+let playerAceCount = 0;
+let dealerAceCount = 0;
 let deck = buildDeck();  //deck of cards
 let hiddenCard = 0;
 let isMyTurn = true;
@@ -48,7 +50,8 @@ function getCardValue(card){    //returns cards numerical value
 function resetGame(){
     playerSum = 0;
     dealerSum = 0;
-    standClicked = false;
+    playerAceCount = 0;
+    dealerAceCount = 0;
     subtractBet();  
     removeCards();
     updateMaxBet();
@@ -76,19 +79,21 @@ function displayCard(card, displayLocation){    //display card on webpage
     let CardDisplayLocation = document.getElementById(displayLocation);
     let img = document.createElement('img');
     img.src = '/Cards/'+ card+'.png';
-    console.log(card);
-    console.log(img.src);
-    displayLocation.append(img);
+    displayLocation.appendChild(img);
 }
 
 function dealPlayerCard(){
     playerSum += getCardValue(deck[deck.length - 1]);
+    if(getCardValue(deck[deck.length - 1]) == 11)   //if ace
+        playerAceCount+=1;
     displayCard(deck[deck.length - 1], PlayerCards);
     deck.pop();
 }
 
 function dealDealerCard(){
     dealerSum += getCardValue(deck[deck.length-1]); //deal 2nd card to dealer
+    if(getCardValue(deck[deck.length - 1]) == 11)   //if ace
+        dealerAceCount+=1;
     displayCard(deck[deck.length-1], DealerCards);
     deck.pop();
 }
@@ -96,6 +101,8 @@ function dealDealerCard(){
 function dealCards(){
     hiddenCard = deck[deck.length-1];   //save hidden card
     dealerSum += getCardValue(deck[deck.length-1]); //deal 1st card to dealer
+    if(getCardValue(deck[deck.length - 1]) == 11)   //if ace
+        dealerAceCount+=1;
     displayCard("BACK", DealerCards);   //Does not display first card
     deck.pop();
     dealPlayerCard();
@@ -108,43 +115,51 @@ function flipHiddenCard(newCard) {
     hidden.src = "/Cards/"+newCard+".png";
 }
 
-function Gamble(event){
-    event.preventDefault(); //prevent page reload
-    resetGame();
-    
-    let hit = document.getElementById("Hit");
-    let stand = document.getElementById("Stand");
-    
-    dealCards();
-    
-    hit.addEventListener('click', function() {
-        if(!standClicked){
-            if (playerSum < 21) {
-                playerSum += getCardValue(deck[deck.length - 1]);
-                displayCard(deck[deck.length - 1], PlayerCards);
-                deck.pop();  
-                // Check for Blackjack or BUST
-                if (playerSum == 21) {
-                    alert("Blackjack!");
-                    isMyTurn = false;
-                } else if (playerSum > 21) {
+function handleStand(){
+    if(isMyTurn){
+        alert("You decided to stand with a total of: " + playerSum);
+        flipHiddenCard(hiddenCard);
+        isMyTurn = false;
+
+        while(dealerSum < 17){   //dealer draws until 17+
+            dealDealerCard();
+            //maybe add sleep function to display cards slowly/1 at a time
+        }
+    }
+}
+
+function handleHit(){
+    console.log("Hit has been pressed");
+    if(isMyTurn){
+        if (playerSum < 21) {
+            dealPlayerCard();
+            if (playerSum == 21) {
+                alert("Blackjack!");
+                isMyTurn = false;
+            }
+            else if (playerSum > 21){
+                if(playerAceCount > 0){
+                    playerAceCount-=1;
+                    playerSum -=10;
+                    alert("FYI- your ace is now a 1");
+                }
+                else{
                     alert("BUST");
                     isMyTurn = false;
                 }
             }
         }
-    });
-    
-    stand.addEventListener('click', function() {
-        if(!standClicked){
-            alert("You decided to stand with a total of: " + playerSum);
-            flipHiddenCard(hiddenCard);
-            standClicked = true;
-            isMyTurn = false;
+    }
+}
 
-            while(dealerSum < 17)   //dealer draws until 17+
-                dealDealerCard();
-        }
-    });
+function Gamble(event){
+    event.preventDefault(); //prevent page reload
+    resetGame();
+    dealCards();
 
+    let hit = document.getElementById("Hit");
+    let stand = document.getElementById("Stand");
+      
+    hit.addEventListener('click', handleHit); 
+    stand.addEventListener('click', handleStand); 
 }
