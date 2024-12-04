@@ -2,6 +2,8 @@ let totalCash = 1000;   //starting cash value $1000
 let playerSum = 0;  //player card total
 let dealerSum = 0;  //dealer card total
 let deck = buildDeck();  //deck of cards
+let hiddenCard = 0;
+let isMyTurn = true;
 
 //when window loads...
 window.onload = function(){
@@ -43,14 +45,31 @@ function getCardValue(card){    //returns cards numerical value
     return(parseInt(value_PNG[0]));
 }
 
+function resetGame(){
+    playerSum = 0;
+    dealerSum = 0;
+    standClicked = false;
+    subtractBet();  
+    removeCards();
+    updateMaxBet();
+    isMyTurn = true;
+}
+
 function updateMaxBet(){    //updates max bet value to remaining balance
-    var maxBet = document.getElementById('betAmount');
+    let maxBet = document.getElementById('betAmount');
     maxBet.setAttribute("max", totalCash);  //max bet amount is what balance remains
 }
 
 function subtractBet(){ //deduct bet from total cash
     betAmount = document.getElementById("betAmount").value;
     totalCash -= betAmount;
+}
+
+function removeCards(){ //removes cards from screen
+    let DealerCards = document.getElementById("DealerCards");
+    let PlayerCards = document.getElementById("PlayerCards");
+    DealerCards.textContent = "";
+    PlayerCards.textContent = "";
 }
 
 function displayCard(card, displayLocation){    //display card on webpage
@@ -62,42 +81,63 @@ function displayCard(card, displayLocation){    //display card on webpage
     displayLocation.append(img);
 }
 
-function removeCards(){ //removes cards from screen
-    let DealerCards = document.getElementById("DealerCards");
-    let PlayerCards = document.getElementById("PlayerCards");
-    DealerCards.textContent = "";
-    PlayerCards.textContent = "";
+function dealPlayerCard(){
+    playerSum += getCardValue(deck[deck.length - 1]);
+    displayCard(deck[deck.length - 1], PlayerCards);
+    deck.pop();
 }
 
-
-function Gamble(event){
-    event.preventDefault(); //prevent page reload
-    subtractBet();  
-    removeCards();
-    dealerSum += getCardValue(deck[deck.length-1]); //deal 1st card to dealer
-    displayCard(deck[deck.length-1], DealerCards);
-    deck.pop();
-    playerSum+= getCardValue(deck[deck.length-1]);  //deal 1st card to player
-    displayCard(deck[deck.length-1], PlayerCards);
-    deck.pop();
+function dealDealerCard(){
     dealerSum += getCardValue(deck[deck.length-1]); //deal 2nd card to dealer
     displayCard(deck[deck.length-1], DealerCards);
     deck.pop();
-    playerSum+= getCardValue(deck[deck.length-1]);  //deal 2nd card to player
-    displayCard(deck[deck.length-1], PlayerCards);
+}
+
+function dealCards(){
+    hiddenCard = deck[deck.length-1];   //save hidden card
+    dealerSum += getCardValue(deck[deck.length-1]); //deal 1st card to dealer
+    displayCard("BACK", DealerCards);   //Does not display first card
     deck.pop();
-    while(playerSum <21){
-        if (playerSum == 21){
-            alert("Blackjack!");
-            break;
+    dealPlayerCard();
+    dealDealerCard();
+    dealPlayerCard();
+}
+
+function Gamble(event){
+    event.preventDefault(); //prevent page reload
+    resetGame();
+
+    console.log(isMyTurn);
+    
+    let hit = document.getElementById("Hit");
+    let stand = document.getElementById("Stand");
+    
+    dealCards();
+    
+    hit.addEventListener('click', function() {
+        if(!standClicked){
+            if (playerSum < 21) {
+                playerSum += getCardValue(deck[deck.length - 1]);
+                displayCard(deck[deck.length - 1], PlayerCards);
+                deck.pop();  
+                // Check for Blackjack or BUST
+                if (playerSum == 21) {
+                    alert("Blackjack!");
+                    isMyTurn = false;
+                } else if (playerSum > 21) {
+                    alert("BUST");
+                    isMyTurn = false;
+                }
+            }
         }
-        else if(playerSum > 21){
-            alert("BUST");
-            break;
+    });
+    
+    stand.addEventListener('click', function() {
+        if(!standClicked){
+            alert("You decided to stand with a total of: " + playerSum);
+            standClicked = true;
+            isMyTurn = false;
         }
-        else{
-            alert("hit or stand?");
-            break;
-        }
-    }
+    });
+
 }
