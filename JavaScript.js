@@ -116,7 +116,6 @@ function Gamble(event){
     let stand = document.getElementById("Stand");
     
     dealCards();
-    flipHiddenCard(hiddenCard);
     
     hit.addEventListener('click', function() {
         if(!standClicked){
@@ -139,8 +138,12 @@ function Gamble(event){
     stand.addEventListener('click', function() {
         if(!standClicked){
             alert("You decided to stand with a total of: " + playerSum);
+            flipHiddenCard(hiddenCard);
             standClicked = true;
             isMyTurn = false;
+
+            while(dealerSum < 17)   //dealer draws until 17+
+                dealDealerCard();
         }
     });
 
