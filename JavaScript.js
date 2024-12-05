@@ -48,6 +48,16 @@ function getCardValue(card){    //returns cards numerical value
     return(parseInt(value_PNG[0]));
 }
 
+function removeButton(){
+    const gambleButton = document.getElementById("GambleButton");
+    gambleButton.style.display= "none";
+}
+
+function returnButton(){
+    const gambleButton = document.getElementById("GambleButton");
+    gambleButton.style.display= "block";
+}
+
 function resetGame(){
     deck = buildDeck(); //rebuilds deck every time FOR NOW
     shuffle(deck);  
@@ -141,6 +151,7 @@ function handleHit(){
                         "\nRemaining balance: " + totalCash
                     );
                     updateMaxBet();
+                    returnButton();
                     isMyTurn = false;
                 }
             }
@@ -173,6 +184,7 @@ function handleStand(){
             alert("You lose");
             updateMaxBet();
         alert("Remaining balance: " + totalCash);
+        returnButton();
     }
 }
 
@@ -180,6 +192,7 @@ function Gamble(event){
     event.preventDefault(); //prevent page reload
     resetGame();
     dealCards();
+    removeButton();
 
     let hit = document.getElementById("Hit");
     let stand = document.getElementById("Stand");
