@@ -57,13 +57,15 @@ function resetGame(){
     dealerAceCount = 0;
     subtractBet();  
     removeCards();
-    updateMaxBet();
     isMyTurn = true;
 }
 
 function updateMaxBet(){    //updates max bet value to remaining balance
     let maxBet = document.getElementById('betAmount');
     maxBet.setAttribute("max", totalCash);  //max bet amount is what balance remains
+    if (parseFloat(maxBet.value) > totalCash) {  // If the current bet exceeds remaining cash
+        maxBet.value = totalCash;  // Update bet to max available cash
+    }
 }
 
 function subtractBet(){ //deduct bet from total cash
@@ -138,6 +140,7 @@ function handleHit(){
                     alert("BUST- YOU LOSE" +
                         "\nRemaining balance: " + totalCash
                     );
+                    updateMaxBet();
                     isMyTurn = false;
                 }
             }
@@ -168,6 +171,7 @@ function handleStand(){
         }
         else
             alert("You lose");
+            updateMaxBet();
         alert("Remaining balance: " + totalCash);
     }
 }
