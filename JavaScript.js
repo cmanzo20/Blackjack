@@ -1,6 +1,7 @@
 let totalCash = 1000;   //starting cash value $1000
 let playerSum = 0;  //player card total
 let dealerSum = 0;  //dealer card total
+let betAmount = 0;
 let playerAceCount = 0;
 let dealerAceCount = 0;
 let deck = buildDeck();  //deck of cards
@@ -66,7 +67,7 @@ function updateMaxBet(){    //updates max bet value to remaining balance
 }
 
 function subtractBet(){ //deduct bet from total cash
-    betAmount = document.getElementById("betAmount").value;
+    betAmount = parseFloat(document.getElementById("betAmount").value);
     totalCash -= betAmount;
 }
 
@@ -109,6 +110,10 @@ function dealCards(){
     dealPlayerCard();
     dealDealerCard();
     dealPlayerCard();
+    if (playerSum == 21) {
+        alert("Blackjack!");
+        handleStand();
+    }
 }
 
 function flipHiddenCard(newCard) {
@@ -122,7 +127,7 @@ function handleHit(){
             dealPlayerCard();
             if (playerSum == 21) {
                 alert("Blackjack!");
-                isMyTurn = false;
+                handleStand();
             }
             else if (playerSum > 21){
                 if(playerAceCount > 0){
@@ -130,7 +135,9 @@ function handleHit(){
                     playerSum -=10;
                 }
                 else{
-                    alert("BUST");
+                    alert("BUST- YOU LOSE" +
+                        "\nRemaining balance: " + totalCash
+                    );
                     isMyTurn = false;
                 }
             }
@@ -151,6 +158,17 @@ function handleStand(){
                 }
             //maybe add sleep function to display cards slowly/1 at a time
         }
+        if(dealerSum<playerSum || dealerSum >21){
+            totalCash+= 2*betAmount;
+            alert("you win!");
+        }
+        else if (dealerSum==playerSum){
+            totalCash+= betAmount;
+            alert("tie");
+        }
+        else
+            alert("You lose");
+        alert("Remaining balance: " + totalCash);
     }
 }
 
