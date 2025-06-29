@@ -75,9 +75,6 @@ function resetGame(){
 function updateMaxBet(){    //updates max bet value to remaining balance
     let maxBet = document.getElementById('betAmount');
     maxBet.setAttribute("max", totalCash);  //max bet amount is what balance remains
-    if (parseFloat(maxBet.value) > totalCash) {  // If the current bet exceeds remaining cash
-        maxBet.value = totalCash;  // Update bet to max available cash
-    }
 }
 
 function subtractBet(){ //deduct bet from total cash
@@ -137,11 +134,16 @@ function flipHiddenCard(newCard) {
     hidden.src = "/Cards/"+newCard+".png";
 }
 
-function handleHit(){
+function sleep(ms){ //sleep func for delay between alert
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function handleHit(){
     if(isMyTurn){
         if (playerSum < 21) {
             dealPlayerCard();
             if (playerSum == 21) {
+                await sleep(cardDealTime);
                 alert("Blackjack!");
                 handleStand();
             }
@@ -151,6 +153,7 @@ function handleHit(){
                     playerSum -=10;
                 }
                 else{
+                    await sleep(cardDealTime);
                     alert("BUST- YOU LOSE" +
                         "\nRemaining balance: " + totalCash
                     );
@@ -163,11 +166,12 @@ function handleHit(){
     }
 }
 
-function handleStand(){
+async function handleStand(){
     if(isMyTurn){
         isMyTurn = false;
         flipHiddenCard(hiddenCard);
         while(dealerSum < 17){   //dealer draws until 17+
+            await sleep(cardDealTime);
             dealDealerCard();
             if(dealerSum>21)
                 if(dealerAceCount>0){
@@ -176,6 +180,7 @@ function handleStand(){
                 }
             //maybe add sleep function to display cards slowly/1 at a time
         }
+        await sleep(cardDealTime);
         if(dealerSum<playerSum || dealerSum >21){
             totalCash+= 2*betAmount;
             alert("you win!");
@@ -194,6 +199,13 @@ function handleStand(){
 
 function Gamble(event){
     event.preventDefault(); //prevent page reload
+    const betInput = document.getElementById("betAmount");
+    betAmount = parseFloat(betInput.value);
+    // Validation: Check for invalid, missing, or out-of-range bet
+    if (isNaN(betAmount)) { //if bet is not a number
+        alert("Please enter a valid bet amount between $1 and $" + totalCash);
+        return; // Stop game start
+    }
     resetGame();
     dealCards();
     removeButton();

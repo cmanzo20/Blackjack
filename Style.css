@@ -91,3 +91,7 @@ button:hover{
 #betPrompt button{
     margin-top: 1rem;
 }
+
+#betAmount {
+    width: 10rem;
+}
