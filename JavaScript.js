@@ -7,6 +7,8 @@ let dealerAceCount = 0;
 let deck = buildDeck();  //deck of cards
 let hiddenCard = 0;
 let isMyTurn = true;
+let cardDealTime = 1000;
+const cardSoundEffect = new Audio("CardDealtSound.mp3");
 
 //when window loads...
 window.onload = function(){
@@ -103,6 +105,7 @@ function dealPlayerCard(){
     if(getCardValue(card) == 11)   //if ace
         playerAceCount+=1;
     displayCard(card, PlayerCards);
+    cardSoundEffect.play();
 }
 
 function dealDealerCard(){
@@ -111,6 +114,7 @@ function dealDealerCard(){
     if(getCardValue(card) == 11)   //if ace
         dealerAceCount+=1;
     displayCard(card, DealerCards);
+    cardSoundEffect.play();
 }
 
 function dealCards(){
@@ -120,8 +124,8 @@ function dealCards(){
         dealerAceCount+=1;
     displayCard("BACK", DealerCards);   //Does not display first card
     dealPlayerCard();
-    dealDealerCard();
-    dealPlayerCard();
+    setTimeout(dealDealerCard, cardDealTime);
+    setTimeout(dealPlayerCard, 2*cardDealTime);
     if (playerSum == 21) {
         alert("Blackjack!");
         handleStand();
