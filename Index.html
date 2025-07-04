@@ -23,7 +23,10 @@
         <button id="Hit">Hit</button>
         <button id="Stand">Stand</button>
         <form id="betPrompt" onsubmit="Gamble(event)">
-            <label for="betAmount">Enter bet amount: </label>
+            <label for="betAmount">
+                Current Balance: $<span id="currentCash">0</span><br>
+                Enter bet amount: 
+            </label>
             <span>$<input type="number" id="betAmount" name="betAmount" min="0" max="totalCash"></span>
             <button id="GambleButton">Gamble</button>
         </form>

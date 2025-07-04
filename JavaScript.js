@@ -14,6 +14,7 @@ const cardSoundEffect = new Audio("CardDealtSound.mp3");
 window.onload = function(){
     shuffle(deck);
     updateMaxBet();
+    updateCashDisplay();
 }
 
 function buildDeck() {  //returns deck of cards
@@ -77,9 +78,14 @@ function updateMaxBet(){    //updates max bet value to remaining balance
     maxBet.setAttribute("max", totalCash);  //max bet amount is what balance remains
 }
 
+function updateCashDisplay(){
+    document.getElementById("currentCash").textContent = totalCash;
+}
+
 function subtractBet(){ //deduct bet from total cash
     betAmount = parseFloat(document.getElementById("betAmount").value);
     totalCash -= betAmount;
+    updateCashDisplay();
 }
 
 function removeCards(){ //removes cards from screen
@@ -154,9 +160,7 @@ async function handleHit(){
                 }
                 else{
                     await sleep(cardDealTime);
-                    alert("BUST- YOU LOSE" +
-                        "\nRemaining balance: " + totalCash
-                    );
+                    alert("BUST- YOU LOSE");
                     updateMaxBet();
                     returnButton();
                     isMyTurn = false;
@@ -192,7 +196,7 @@ async function handleStand(){
         else
             alert("You lose");
             updateMaxBet();
-        alert("Remaining balance: " + totalCash);
+        updateCashDisplay();
         returnButton();
     }
 }
