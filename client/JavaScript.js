@@ -226,7 +226,7 @@ function Gamble(event){
 }
 
 //BELOW ARE FUNCTIONS FOR FETCHING FROM BACKEND
-const backendUrl = 'http://localhost:5000'; // change to your deployed backend URL later
+const backendUrl = 'https://blackjack-u3hu.onrender.com/'; // change to your deployed backend URL later
 
 // Fetch leaderboard from backend and display it
 async function fetchLeaderboard() {
