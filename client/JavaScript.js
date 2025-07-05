@@ -101,7 +101,7 @@ function removeCards(){ //removes cards from screen
 function displayCard(card, displayLocation){    //display card on webpage
     let CardDisplayLocation = document.getElementById(displayLocation);
     let img = document.createElement('img');
-    img.src = '/Client/Cards/'+ card+'.png';
+    img.src = '/Cards/'+ card+'.png';
     displayLocation.appendChild(img);
 }
 
