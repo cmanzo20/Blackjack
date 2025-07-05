@@ -238,15 +238,24 @@ async function fetchLeaderboard() {
     const list = document.getElementById('leaderboardList');
     list.innerHTML = ''; // clear current list
 
-    leaderboard.forEach(entry => {
+    const medals = ['🥇', '🥈', '🥉'];
+
+    leaderboard.forEach((entry, index) => {
       const li = document.createElement('li');
-      li.textContent = `${entry.name}: ${entry.score}`;
+      const rank = medals[index] || `#${index + 1}`;
+      
+      li.innerHTML = `
+        <span class="player-name">${rank} ${entry.name}</span>
+        <span class="player-score">$${entry.score}</span>
+      `;
+      
       list.appendChild(li);
     });
   } catch (err) {
     console.error('Error fetching leaderboard:', err);
   }
 }
+
 
 // Post new score to backend
 async function postScore(name, score) {
